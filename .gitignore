@@ -1,0 +1,21 @@
+# Pesos entrenados: no son código y pesan demasiado
+modelos/
+*.pkl
+
+# Imágenes generadas
+salida/
+
+# Repo externo de NVIDIA — se clona aparte, ver README
+stylegan2-ada-pytorch/
+
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Configuración local de PyCharm
+.idea/
+
+# Guía local para Claude Code
+CLAUDE.md
+.claude/

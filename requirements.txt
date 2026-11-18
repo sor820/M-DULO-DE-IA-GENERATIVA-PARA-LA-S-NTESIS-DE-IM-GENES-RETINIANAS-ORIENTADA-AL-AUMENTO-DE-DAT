@@ -1,0 +1,9 @@
+# StyleGAN2-ADA (dnnlib, legacy, torch_utils)
+numpy>=1.26,<3
+scipy>=1.11
+click>=8.1
+requests>=2.31
+
+# Imagen y progreso
+pillow>=10
+tqdm>=4.66

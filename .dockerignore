@@ -1,0 +1,7 @@
+modelos/
+salida/
+stylegan2-ada-pytorch/
+__pycache__/
+*.pyc
+.venv/
+.git/

@@ -1,0 +1,51 @@
+services:
+
+  retinasynth:
+
+    build:
+      context: .
+
+    container_name: retinasynth
+
+    # Es una aplicación de escritorio: cerrar la ventana termina
+    # el contenedor, y no debe volver a levantarse solo.
+    restart: "no"
+
+    environment:
+      # Pantalla de WSLg. Fija aquí para que funcione igual al
+      # lanzar desde PowerShell, Docker Desktop o WSL.
+      DISPLAY: ":0"
+      STYLEGAN_PATH: /stylegan2-ada-pytorch
+      MODELOS_PATH: /modelos
+      SALIDA_PATH: /salida
+
+    volumes:
+      # Socket de X11 de WSLg: por aquí sale la ventana de Tkinter
+      # hacia Windows. La ruta por omisión es la que ve Docker
+      # Desktop al lanzar desde PowerShell o su propio botón; al
+      # lanzar desde una terminal WSL hay que exportar antes
+      # X11_SOCKET=/mnt/wslg/.X11-unix
+      - ${X11_SOCKET:-/run/desktop/mnt/host/wslg/.X11-unix}:/tmp/.X11-unix
+
+      # Repo de NVIDIA, clonado aparte. No se copia a la
+      # imagen ni se versiona: su licencia es no comercial.
+      - ./stylegan2-ada-pytorch:/stylegan2-ada-pytorch
+
+      # Pesos entrenados, en solo lectura: la herramienta
+      # nunca debe escribir sobre ellos.
+      - ./modelos:/modelos:ro
+
+      # Imágenes generadas y manifiesto.
+      - ./salida:/salida
+
+      # Código, para no reconstruir en cada cambio.
+      - .:/app
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
